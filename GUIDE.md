@@ -20,7 +20,7 @@ OmniVoice/
 ├── 1_pdf_to_text.py               ← Step 1 entry point
 ├── 2_text_to_speech.py            ← Step 2 entry point
 ├── 1_output_book_txt/<book>/      ← extracted text, one folder per book
-│        └── <book>_clean.txt      ← the readable text (use THIS for audio)
+│        └── final_<book>_clean.txt  ← the readable text (use THIS for audio)
 ├── 2_output_book_audio/<book>/    ← final .wav, one folder per book
 ├── pdf_to_text/                   ← Step 1 engine (pipeline.py + OCR helpers)
 ├── omnivoice/                     ← the TTS engine (library, don't touch)
@@ -55,8 +55,8 @@ Optional flags:
 | `--slug NAME` | Override the output folder name (default: derived from the filename). |
 | `--dpi N` | Render DPI (default `200`). |
 
-**Result:** `1_output_book_txt/<slug>/<slug>_clean.txt` (running heads removed).
-Use the `_clean.txt` file — not the raw/fixed ones — for the next step.
+**Result:** `1_output_book_txt/<slug>/final_<slug>_clean.txt` (running heads removed).
+Use the `final_<slug>_clean.txt` file — not the raw/fixed ones — for the next step.
 
 > Note: Step 1 needs the Windows OCR language pack. See
 > [pdf_to_text/readme.md](pdf_to_text/readme.md) for the full detail.
@@ -65,10 +65,10 @@ Use the `_clean.txt` file — not the raw/fixed ones — for the next step.
 
 ```powershell
 # Whole book:
-.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<slug>/<slug>_clean.txt" -all-chars
+.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<slug>/final_<slug>_clean.txt" -all-chars
 
 # Quick sample (first 1000 characters) — good for a performance check:
-.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<slug>/<slug>_clean.txt" -max-chars 1000
+.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<slug>/final_<slug>_clean.txt" -max-chars 1000
 ```
 
 **Result:** `2_output_book_audio/<slug>/<slug>.wav` (the output folder is the
@@ -97,8 +97,8 @@ cd C:\_web_apps_2025\OmniVoice
     --author "Lewis Guy Rohrbaugh"
 
 # 2) text → audio (sample first, then the whole book):
-.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/TheEnergyConcept/TheEnergyConcept_clean.txt" -max-chars 1000
-.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/TheEnergyConcept/TheEnergyConcept_clean.txt" -all-chars
+.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/TheEnergyConcept/final_TheEnergyConcept_clean.txt" -max-chars 1000
+.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/TheEnergyConcept/final_TheEnergyConcept_clean.txt" -all-chars
 ```
 
 ---

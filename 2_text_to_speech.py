@@ -8,13 +8,13 @@ Usage
 Examples
 --------
     # Whole book as ONE .wav (written to 2_output_book_audio/<book>/):
-    python 2_text_to_speech.py "1_output_book_txt/Book/Book_clean.txt" -all-chars
+    python 2_text_to_speech.py "1_output_book_txt/Book/final_Book_clean.txt" -all-chars
 
     # Split the book into ~5000-character parts, one .wav per part:
-    python 2_text_to_speech.py "1_output_book_txt/Book/Book_clean.txt" --split 5000
+    python 2_text_to_speech.py "1_output_book_txt/Book/final_Book_clean.txt" --split 5000
 
     # First 1000 characters (sample / performance check):
-    python 2_text_to_speech.py "1_output_book_txt/Book/Book_clean.txt" -max-chars 1000
+    python 2_text_to_speech.py "1_output_book_txt/Book/final_Book_clean.txt" -max-chars 1000
 
     # Explicit output directory, or a full .wav path:
     python 2_text_to_speech.py book.txt "somewhere/else" -all-chars

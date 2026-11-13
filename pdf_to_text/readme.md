@@ -14,10 +14,10 @@ The pipeline runs six stages, orchestrated by a single script (`pipeline.py`):
 | 2 | **dehyphenate** | Joins words hyphenated across a line break (`compre-` + `hensible` → `comprehensible`). | `dehyph_ocr.txt` |
 | 3 | **spellfix** | Applies curated OCR-error fixes from `curation/fix.tsv` (word-boundary token replacements). | `fixed_ocr.txt` |
 | 4 | **finalize** | Joins words hyphenated across a *page* break, annotates blank pages, prepends a provenance header. | `<slug>.txt` |
-| 5 | **cleanheads** | Removes running heads (the repeated book/chapter title + page number at the top of each page), detected automatically by frequency, then re-joins page-break hyphenations and annotates blank pages. | `<slug>_clean.txt` |
+| 5 | **cleanheads** | Removes running heads (the repeated book/chapter title + page number at the top of each page), detected automatically by frequency, then re-joins page-break hyphenations and annotates blank pages. | `final_<slug>_clean.txt` |
 | 6 | **verify** | Spell-checks the final text and writes stats + remaining unknown tokens. | `verification_summary.txt` |
 
-The **readable output** is `<slug>_clean.txt` — the final text with page
+The **readable output** is `final_<slug>_clean.txt` — the final text with page
 markers retained but running heads removed.
 
 ## Requirements
@@ -60,7 +60,7 @@ Each book gets its own folder under `output/`:
 ```
 output/
 └── TheEnergyConcept/
-    ├── TheEnergyConcept_clean.txt     ← readable output (running heads removed)
+    ├── final_TheEnergyConcept_clean.txt     ← readable output (running heads removed)
     ├── TheEnergyConcept.txt           ← final text with page markers
     ├── verification_summary.txt       ← spell-check stats + remaining unknown tokens
     ├── raw_ocr.txt                    ← raw OCR (one page marker per page)

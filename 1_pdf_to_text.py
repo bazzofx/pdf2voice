@@ -7,7 +7,7 @@ Run from the repo root, e.g.:
     python 1_pdf_to_text.py TheEnergyConcept.pdf       # bare name -> pdf_source/
 
 The readable output is written to
-    1_output_book_txt/<slug>/<slug>_clean.txt
+    1_output_book_txt/<slug>/final_<slug>_clean.txt
 
 This is a thin runner around the full pipeline in pdf_to_text/pipeline.py
 (all the render/OCR/spellfix stages live there).

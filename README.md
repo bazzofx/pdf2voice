@@ -12,7 +12,7 @@ Turn scanned-book **PDFs** into spoken **audio** (audiobooks) in two steps.
 .venv\Scripts\python.exe 1_pdf_to_text.py pdf_source/MyBook.pdf
 
 # 2) Convert the extracted text to audio (split into ~5000-char parts):
-.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<book>/<book>_clean.txt" --split 5000
+.venv\Scripts\python.exe 2_text_to_speech.py "1_output_book_txt/<book>/final_<book>_clean.txt" --split 5000
 ```
 
 Full walkthrough and all flags: see **[GUIDE.md](GUIDE.md)**.

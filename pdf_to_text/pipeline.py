@@ -14,7 +14,7 @@ Stages (all in one call):
   4. finalize    join words hyphenated across a page break, annotate blank
                  pages, prepend a provenance header -> <slug>.txt.
   5. cleanheads  remove running heads / page numbers, then re-join page-break
-                 hyphenations and annotate blank pages -> <slug>_clean.txt.
+                 hyphenations and annotate blank pages -> final_<slug>_clean.txt.
   6. verify      spell-check the clean text -> verification_summary.txt.
 
 Per-book output layout (under output/<slug>/):
@@ -23,7 +23,7 @@ Per-book output layout (under output/<slug>/):
     dehyph_ocr.txt         after line-wrap dehyphenation
     fixed_ocr.txt          after curated token fixes
     <slug>.txt             final text (page markers retained)
-    <slug>_clean.txt       final text with running heads removed  <-- the readable file
+    final_<slug>_clean.txt       final text with running heads removed  <-- the readable file
     verification_summary.txt  spell-check stats + remaining unknown tokens
     curation/fix.tsv       curated OCR-error fixes (token -> replacement)
     curation/keep.txt      legitimate tokens to keep (proper nouns, Latin, ...)
@@ -148,6 +148,13 @@ def annotate_blank_pages(text):
             out.append(lines[i])
             i += 1
     return "\n".join(out), blank
+
+
+def remove_standalone_numbers(text):
+    """Delete lines that contain only digits (leftover page numbers)."""
+    lines = text.split("\n")
+    kept = [ln for ln in lines if not PAGENUM_RE.match(ln.strip())]
+    return "\n".join(kept), len(lines) - len(kept)
 
 
 def build_header(title, author, src_pdf, page_count):
@@ -342,7 +349,7 @@ def main(argv=None):
     dehyph = os.path.join(book_dir, "dehyph_ocr.txt")
     fixed = os.path.join(book_dir, "fixed_ocr.txt")
     final = os.path.join(book_dir, slug + ".txt")
-    clean = os.path.join(book_dir, slug + "_clean.txt")
+    clean = os.path.join(book_dir, "final_" + slug + "_clean.txt")
     summary = os.path.join(book_dir, "verification_summary.txt")
     curation = os.path.join(book_dir, "curation")
     os.makedirs(curation, exist_ok=True)
@@ -412,9 +419,11 @@ def main(argv=None):
     clean_text, n_removed = remove_running_heads(text, heads)
     clean_text = join_page_breaks(clean_text)
     clean_text, _ = annotate_blank_pages(clean_text)
+    clean_text, n_digits = remove_standalone_numbers(clean_text)
     open(clean, "w", encoding="utf-8").write(header + clean_text)
     print("  detected running heads: %s" % (sorted(heads) if heads else "none"))
     print("  header lines removed: %d" % n_removed)
+    print("  page-number lines removed: %d" % n_digits)
     print("  wrote %s" % clean)
 
     # stage 6
